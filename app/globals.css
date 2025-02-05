@@ -1,21 +1,312 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+
+@font-face {
+  font-family: 'HyliaSerif';
+  src: url('/fonts/HyliaSerifBeta-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: 15, 23, 42;
+  --foreground: 248, 250, 252;
+  --primary: 30, 41, 59;
+  --secondary: 51, 65, 85;
+  --accent: 234, 179, 8;
+  --gold: 253, 224, 71;
+  --gold-hover: 234, 179, 8;
+  --muted: 148, 163, 184;
+  --card-bg: 30, 41, 59;
+  --card-border: 51, 65, 85;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+[data-theme='dark'] {
+  /* Dark mode - mystical night theme */
+  --background: 20, 24, 33;
+  --foreground: 237, 229, 220;
+  --primary: 70, 48, 93;
+  --accent: 147, 112, 219;
+  --gold: 218, 165, 32;
+  --gold-hover: 184, 134, 11;
+  --muted: 176, 156, 197;
+  --card-bg: 32, 36, 45;
+  --card-border: 70, 48, 93;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground));
+  background: rgb(var(--background));
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.zelda-title {
+  font-family: 'HyliaSerif', serif;
+  letter-spacing: 0.1em;
+  color: rgb(var(--gold));
+  text-shadow: 0 0 30px rgba(var(--gold), 0.3);
+}
+
+/* Hero section with advanced background */
+.hero-section {
+  @apply relative min-h-screen flex flex-col items-center justify-center text-center isolate overflow-hidden;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgb(var(--primary)),
+    rgb(var(--background))
+  );
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(to right, transparent 0%, rgba(var(--gold), 0.03) 50%, transparent 100%),
+    radial-gradient(circle at 50% 0%, rgba(var(--gold), 0.1), transparent 50%);
+  mask-image: radial-gradient(circle at 50% 50%, black, transparent 70%);
+  z-index: -1;
+}
+
+/* Animated background patterns */
+.hero-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      rgba(var(--gold), 0.01) 0%,
+      rgba(var(--gold), 0.01) 1px,
+      transparent 1px,
+      transparent 50%
+    );
+  background-size: 10px 10px;
+  animation: patternMove 20s linear infinite;
+  opacity: 0.5;
+  z-index: -1;
+}
+
+@keyframes patternMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100px 100px;
+  }
+}
+
+.hero__header {
+  @apply max-w-4xl mx-auto px-4 py-16 relative;
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--primary), 0.3) 0%,
+    transparent 70%
+  );
+}
+
+.hero__logo {
+  @apply relative mb-12;
+}
+
+.hero__logo::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(circle at center, rgba(var(--gold), 0.1), transparent 70%);
+  filter: blur(20px);
+  z-index: -1;
+}
+
+.hero__description {
+  @apply text-xl sm:text-2xl mb-16 tracking-wider;
+  color: rgba(var(--foreground), 0.9);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.hero__links {
+  @apply w-full max-w-6xl mx-auto px-4;
+}
+
+.hero__button {
+  @apply relative block py-4 px-6 transition-all duration-500;
+  background: rgba(var(--primary), 0.6);
+  border: 1px solid rgba(var(--gold), 0.3);
+  backdrop-filter: blur(10px);
+  color: rgb(var(--gold));
+}
+
+.hero__button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(var(--gold), 0.1),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.hero__button:hover {
+  transform: translateY(-2px);
+  border-color: rgba(var(--gold), 0.8);
+  box-shadow: 
+    0 0 20px rgba(var(--gold), 0.1),
+    0 0 30px rgba(var(--gold), 0.05);
+}
+
+.hero__button:hover::before {
+  opacity: 1;
+}
+
+.hero__button span {
+  @apply block text-lg font-bold mt-1 relative;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Card styles */
+.zelda-card {
+  @apply relative block p-8 rounded-lg transition-all duration-500;
+  background: rgba(var(--card-bg), 0.8);
+  border: 1px solid rgba(var(--card-border), 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.zelda-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(var(--gold), 0.05),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.5s;
+  border-radius: inherit;
+}
+
+.zelda-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(var(--gold), 0.5);
+  box-shadow: 
+    0 4px 20px rgba(var(--gold), 0.1),
+    0 0 30px rgba(var(--gold), 0.05);
+}
+
+.zelda-card:hover::before {
+  opacity: 1;
+}
+
+.zelda-card:hover .zelda-icon {
+  color: rgb(var(--gold));
+  transform: scale(1.1) rotate(5deg);
+}
+
+.zelda-icon {
+  @apply text-5xl mb-6 transition-all duration-500;
+  color: rgba(var(--gold), 0.7);
+}
+
+.card-title {
+  @apply text-2xl font-bold mb-3;
+  color: rgb(var(--foreground));
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-description {
+  color: rgb(var(--muted));
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(var(--background), 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--gold));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--gold-hover));
+}
+
+/* Button styles */
+.btn-primary {
+  @apply px-6 py-3 rounded-none transition-colors duration-300
+         font-bold tracking-wider uppercase text-sm;
+  background: rgb(var(--primary));
+  color: rgb(var(--card-bg));
+}
+
+.btn-primary:hover {
+  background: rgb(var(--accent));
+}
+
+.btn-secondary {
+  @apply px-6 py-3 rounded-none transition-all duration-300
+         font-bold tracking-wider uppercase text-sm;
+  border: 1px solid rgb(var(--gold));
+  color: rgb(var(--gold));
+}
+
+.btn-secondary:hover {
+  background: rgb(var(--gold));
+  color: rgb(var(--background));
+}
+
+/* Navigation */
+.nav-link {
+  @apply transition-colors duration-300
+         uppercase tracking-wider text-sm font-bold;
+  color: rgb(var(--gold));
+}
+
+.nav-link:hover {
+  color: rgb(var(--accent));
 }
