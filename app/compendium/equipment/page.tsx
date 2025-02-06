@@ -110,7 +110,15 @@ export default function EquipmentPage() {
     fetchData();
   }, []);
 
-  const categories = ['all', ...new Set(equipment.map(item => item.category || ''))];
+  // Get unique categories
+  const categories = ['all'];
+  const categorySet = new Set<string>();
+  equipment.forEach(item => {
+    if (item.category && !categorySet.has(item.category)) {
+      categorySet.add(item.category);
+      categories.push(item.category);
+    }
+  });
 
   const filteredEquipment = equipment.filter(item =>
     (searchTerm === '' || item.name.toLowerCase().includes(searchTerm.toLowerCase())) &&

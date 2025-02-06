@@ -54,7 +54,15 @@ export default function ArmorPage() {
     fetchData();
   }, []);
 
-  const categories = ['all', ...new Set(armor.map(item => item.category || ''))];
+  // Get unique categories
+  const categories = ['all'];
+  const categorySet = new Set<string>();
+  armor.forEach(item => {
+    if (item.category && !categorySet.has(item.category)) {
+      categorySet.add(item.category);
+      categories.push(item.category);
+    }
+  });
 
   const filteredArmor = armor.filter(item =>
     (searchTerm === '' || item.name.toLowerCase().includes(searchTerm.toLowerCase())) &&
