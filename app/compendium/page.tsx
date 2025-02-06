@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { GiSpellBook, GiMonsterGrasp, GiSwordsPower, GiRabbit, GiArmorVest } from 'react-icons/gi';
+import { GiSpellBook, GiMonsterGrasp, GiSwordsPower, GiRabbit, GiCrystalGrowth } from 'react-icons/gi';
 
 const categories = [
   {
@@ -29,12 +29,12 @@ const categories = [
     count: '100+ Entries'
   },
   {
-    id: 'armor',
-    title: 'Armor',
-    description: 'Protective gear and special clothing',
-    icon: GiArmorVest,
+    id: 'materials',
+    title: 'Materials',
+    description: 'Resources, ingredients, and treasures found throughout Hyrule',
+    icon: GiCrystalGrowth,
     color: 'from-purple-500/20 to-transparent',
-    count: '40+ Entries'
+    count: '200+ Items'
   }
 ];
 

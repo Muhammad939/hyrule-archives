@@ -1,4 +1,5 @@
 import './globals.css';
+import 'leaflet/dist/leaflet.css';
 import { GiShardSword } from 'react-icons/gi';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import Link from 'next/link';
@@ -6,10 +7,11 @@ import { ThemeProvider } from './components/ThemeProvider';
 import SearchBar from './components/SearchBar';
 import MobileMenu from './components/MobileMenu';
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata = {
   title: 'The Hyrule Archives',
-  description: 'Your gateway to the world of Zelda - Explore lore, guides, puzzles, and theories.',
+  description: 'The Hyrule Archives Is A Website That Contains Information About The Legend Of Zelda Series. And Also Contains Guides, Puzzles, Compendium, And More!',
 };
 
 const navLinks = [
@@ -113,6 +115,7 @@ export default function RootLayout({
             </div>
           </footer>
           <Analytics />
+          <SpeedInsights />
         </body>
       </ThemeProvider>
     </html>
