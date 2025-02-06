@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ThemeProvider } from './components/ThemeProvider';
 import SearchBar from './components/SearchBar';
 import MobileMenu from './components/MobileMenu';
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
   title: 'The Hyrule Archives',
@@ -111,6 +112,7 @@ export default function RootLayout({
               </div>
             </div>
           </footer>
+          <Analytics />
         </body>
       </ThemeProvider>
     </html>
