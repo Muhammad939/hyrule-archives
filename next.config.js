@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  images: {
+    domains: [
+      'botw-compendium.herokuapp.com',
+      'static.wikia.nocookie.net'
+    ],
+  },
 };
 
 module.exports = nextConfig; 
