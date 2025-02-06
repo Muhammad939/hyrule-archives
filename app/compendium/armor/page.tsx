@@ -13,6 +13,7 @@ interface Armor {
   defense?: number;
   category?: string;
   locations?: string[];
+  game: string;
 }
 
 export default function ArmorPage() {
@@ -37,7 +38,8 @@ export default function ArmorPage() {
           image: item.image,
           defense: item.defense,
           category: item.category,
-          locations: item.common_locations
+          locations: item.common_locations,
+          game: 'Breath of the Wild'
         }));
 
         setArmor(processedArmor);
@@ -134,7 +136,11 @@ export default function ArmorPage() {
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-[rgb(var(--gold))]">{item.name}</h3>
-                    <span className="text-xs text-[rgb(var(--muted))]">{item.category}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-[rgb(var(--muted))]">{item.category}</span>
+                      <span className="text-xs text-[rgb(var(--gold))]">•</span>
+                      <span className="text-xs text-[rgb(var(--muted))]">{item.game}</span>
+                    </div>
                   </div>
                 </div>
                 <p className="text-sm text-[rgb(var(--muted))] mb-4 leading-relaxed">{item.description}</p>

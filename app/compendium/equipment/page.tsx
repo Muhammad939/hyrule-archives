@@ -14,6 +14,7 @@ interface Equipment {
   defense?: number;
   category?: string;
   locations?: string[];
+  games: string[];
 }
 
 export default function EquipmentPage() {
@@ -31,16 +32,71 @@ export default function EquipmentPage() {
         const response = await fetch('https://botw-compendium.herokuapp.com/api/v3/compendium/category/equipment');
         const data = await response.json();
         
-        const processedEquipment = data.data.map((item: any) => ({
-          id: item.id.toString(),
-          name: item.name.charAt(0).toUpperCase() + item.name.slice(1).replace(/-/g, ' '),
-          description: item.description,
-          image: item.image,
-          attack: item.attack,
-          defense: item.defense,
-          category: item.category,
-          locations: item.common_locations
-        }));
+        const processedEquipment = data.data.map((item: any) => {
+          // List of items that appear in both games
+          const dualGameItems = [
+            // Iconic Equipment
+            'master sword',
+            'hylian shield',
+            'bow of light',
+            
+            // Basic Weapons
+            'tree branch',
+            'torch',
+            'wooden stick',
+            'rusty sword',
+            'rusty shield',
+            'rusty claymore',
+            'rusty broadsword',
+            
+            // Bows
+            'wooden bow',
+            'ancient bow',
+            'royal bow',
+            'knight\'s bow',
+            'traveler\'s bow',
+            
+            // Shields
+            'wooden shield',
+            'royal shield',
+            'knight\'s shield',
+            'traveler\'s shield',
+            
+            // Swords & Other Weapons
+            'royal broadsword',
+            'royal claymore',
+            'knight\'s broadsword',
+            'knight\'s claymore',
+            'traveler\'s sword',
+            'traveler\'s claymore',
+            'wooden stick',
+            'boomerang',
+            'throwing spear',
+            'wooden spear',
+            
+            // Special Weapons
+            'ancient sword',
+            'ancient spear',
+            'ancient shield',
+            'guardian sword',
+            'guardian spear',
+            'guardian shield'
+          ];
+
+          return {
+            id: item.id.toString(),
+            name: item.name.charAt(0).toUpperCase() + item.name.slice(1).replace(/-/g, ' '),
+            description: item.description,
+            image: item.image,
+            attack: item.attack,
+            defense: item.defense,
+            category: item.category,
+            locations: item.common_locations,
+            games: dualGameItems.includes(item.name) 
+              ? ['Breath of the Wild', 'Tears of the Kingdom']
+              : ['Breath of the Wild']
+          };
+        });
 
         setEquipment(processedEquipment);
       } catch (error) {
@@ -136,7 +192,13 @@ export default function EquipmentPage() {
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-[rgb(var(--gold))]">{item.name}</h3>
-                    <span className="text-xs text-[rgb(var(--muted))]">{item.category}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-[rgb(var(--muted))]">{item.category}</span>
+                      <span className="text-xs text-[rgb(var(--gold))]">•</span>
+                      <span className="text-xs text-[rgb(var(--muted))]">
+                        {item.games.join(' • ')}
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <p className="text-sm text-[rgb(var(--muted))] mb-4 leading-relaxed">{item.description}</p>
