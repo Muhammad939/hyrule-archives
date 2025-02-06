@@ -22,7 +22,17 @@ export default function EquipmentPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
+
+  // Debounce search term
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -120,10 +130,17 @@ export default function EquipmentPage() {
     }
   });
 
-  const filteredEquipment = equipment.filter(item =>
-    (searchTerm === '' || item.name.toLowerCase().includes(searchTerm.toLowerCase())) &&
-    (categoryFilter === 'all' || item.category === categoryFilter)
-  );
+  const filteredEquipment = equipment.filter(item => {
+    const searchLower = debouncedSearch.toLowerCase();
+    const matchesSearch = searchLower === '' ||
+      item.name.toLowerCase().includes(searchLower) ||
+      item.description.toLowerCase().includes(searchLower) ||
+      item.category?.toLowerCase().includes(searchLower) ||
+      item.locations?.some(location => location.toLowerCase().includes(searchLower)) ||
+      item.games.some(game => game.toLowerCase().includes(searchLower));
+    
+    return matchesSearch && (categoryFilter === 'all' || item.category === categoryFilter);
+  });
 
   return (
     <div className="min-h-screen bg-[rgb(var(--background))] py-16">
@@ -141,16 +158,30 @@ export default function EquipmentPage() {
 
         {/* Filters */}
         <div className="mb-8 space-y-4">
-          <input
-            type="text"
-            placeholder="Search equipment..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-4 rounded-lg bg-[rgba(var(--primary),0.3)] 
-                     border border-[rgba(var(--gold),0.2)] text-[rgb(var(--foreground))]
-                     focus:border-[rgb(var(--gold))] focus:outline-none"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search by name, description, category, location, or game..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full p-4 pl-12 rounded-lg bg-[rgba(var(--primary),0.3)] 
+                       border border-[rgba(var(--gold),0.2)] text-[rgb(var(--foreground))]
+                       focus:border-[rgb(var(--gold))] focus:outline-none
+                       transition-all duration-300"
+            />
+            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[rgb(var(--muted))]">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+          </div>
           
+          {searchTerm && (
+            <div className="text-sm text-[rgb(var(--muted))]">
+              Found {filteredEquipment.length} results
+            </div>
+          )}
+
           <div className="flex flex-wrap gap-2">
             {categories.map((category) => (
               <button

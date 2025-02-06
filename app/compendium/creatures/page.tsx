@@ -20,6 +20,16 @@ export default function CreaturesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+
+  // Debounce search term
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,9 +61,18 @@ export default function CreaturesPage() {
     fetchData();
   }, []);
 
-  const filteredCreatures = creatures.filter(creature =>
-    searchTerm === '' || creature.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredCreatures = creatures.filter(creature => {
+    const searchLower = debouncedSearch.toLowerCase();
+    return (
+      searchLower === '' ||
+      creature.name.toLowerCase().includes(searchLower) ||
+      creature.description.toLowerCase().includes(searchLower) ||
+      creature.cooking_effect?.toLowerCase().includes(searchLower) ||
+      creature.locations?.some(location => 
+        location.toLowerCase().includes(searchLower)
+      )
+    );
+  });
 
   return (
     <div className="min-h-screen bg-[rgb(var(--background))] py-16">
@@ -71,15 +90,28 @@ export default function CreaturesPage() {
 
         {/* Search Bar */}
         <div className="mb-8">
-          <input
-            type="text"
-            placeholder="Search creatures..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-4 rounded-lg bg-[rgba(var(--primary),0.3)] 
-                     border border-[rgba(var(--gold),0.2)] text-[rgb(var(--foreground))]
-                     focus:border-[rgb(var(--gold))] focus:outline-none"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search by name, description, effects, or location..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full p-4 pl-12 rounded-lg bg-[rgba(var(--primary),0.3)] 
+                       border border-[rgba(var(--gold),0.2)] text-[rgb(var(--foreground))]
+                       focus:border-[rgb(var(--gold))] focus:outline-none
+                       transition-all duration-300"
+            />
+            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[rgb(var(--muted))]">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+          </div>
+          {searchTerm && (
+            <div className="mt-2 text-sm text-[rgb(var(--muted))]">
+              Found {filteredCreatures.length} results
+            </div>
+          )}
         </div>
 
         {loading ? (
@@ -127,7 +159,7 @@ export default function CreaturesPage() {
                     </div>
                   )}
                   
-                  {creature.hearts_recovered > 0 && (
+                  {creature.hearts_recovered !== undefined && creature.hearts_recovered > 0 && (
                     <div>
                       <h4 className="font-bold text-[rgb(var(--gold))] mb-2">Hearts Recovered:</h4>
                       <span className="text-sm text-[rgb(var(--muted))] p-2 bg-[rgba(var(--primary),0.3)] rounded">
