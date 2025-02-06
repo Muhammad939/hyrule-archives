@@ -5,6 +5,7 @@
   src: url('/fonts/HyliaSerifBeta-Regular.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 @tailwind base;
@@ -12,16 +13,34 @@
 @tailwind utilities;
 
 :root {
-  --background: 15, 23, 42;
-  --foreground: 248, 250, 252;
-  --primary: 30, 41, 59;
+  --background: 10, 15, 18;
+  --foreground: 255, 255, 255;
+  --primary: 26, 35, 41;
   --secondary: 51, 65, 85;
   --accent: 234, 179, 8;
-  --gold: 253, 224, 71;
-  --gold-hover: 234, 179, 8;
-  --muted: 148, 163, 184;
+  --gold: 218, 165, 32;
+  --gold-hover: 255, 215, 0;
+  --muted: 156, 200, 219;
   --card-bg: 30, 41, 59;
   --card-border: 51, 65, 85;
+}
+
+@layer base {
+  body {
+    @apply bg-[rgb(var(--background))] text-[rgb(var(--foreground))];
+  }
+}
+
+@layer components {
+  .zelda-card {
+    @apply relative p-6 rounded-lg border border-[rgba(var(--gold),0.2)] 
+           transition-all duration-300 overflow-hidden
+           hover:border-[rgba(var(--gold),0.5)];
+  }
+
+  .zelda-title {
+    @apply font-serif tracking-wide;
+  }
 }
 
 [data-theme='dark'] {
@@ -260,20 +279,20 @@ body {
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(var(--background), 0.8);
+  background: rgba(var(--primary), 0.3);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(var(--gold));
-  border-radius: 4px;
+  background: rgba(var(--gold), 0.5);
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(var(--gold-hover));
+  background: rgba(var(--gold), 0.7);
 }
 
 /* Button styles */
@@ -309,4 +328,103 @@ body {
 
 .nav-link:hover {
   color: rgb(var(--accent));
+}
+
+/* Loading animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Card hover effects */
+.zelda-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--gold), 0.1) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.zelda-card:hover::before {
+  opacity: 1;
+}
+
+/* Image hover effects */
+.zelda-card img {
+  transition: transform 0.3s ease;
+}
+
+.zelda-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Button hover effects */
+button {
+  position: relative;
+  overflow: hidden;
+}
+
+button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(var(--gold), 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+button:hover::after {
+  width: 200%;
+  height: 200%;
+}
+
+/* Link hover effects */
+a {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: rgb(var(--gold));
+  transition: width 0.3s ease;
+}
+
+a:hover::after {
+  width: 100%;
+}
+
+/* Custom font for Zelda titles */
+@font-face {
+  font-family: 'HyliaSerif';
+  src: url('/fonts/HyliaSerifBeta-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.zelda-title {
+  font-family: 'HyliaSerif', serif;
 }

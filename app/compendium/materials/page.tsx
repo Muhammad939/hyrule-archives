@@ -15,9 +15,6 @@ interface Material {
   category: string;
   locations?: string[];
   common_locations?: string[];
-  attack?: number;
-  defense?: number;
-  drops?: string[];
 }
 
 export default function MaterialsPage() {
@@ -33,18 +30,31 @@ export default function MaterialsPage() {
       setError(null);
       try {
         const response = await fetch('https://botw-compendium.herokuapp.com/api/v3/compendium/category/materials');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
+        console.log('API Response:', data); // Debug log
         
-        const processedMaterials = data.data.map((material: any) => ({
-          id: material.id.toString(),
-          name: material.name.charAt(0).toUpperCase() + material.name.slice(1).replace(/-/g, ' '),
-          description: material.description || 'No description available',
-          image: material.image || '',
-          cooking_effect: material.cooking_effect || null,
-          hearts_recovered: material.hearts_recovered || null,
-          category: material.category || 'Other',
-          locations: material.common_locations || []
-        }));
+        if (!data.data || !Array.isArray(data.data)) {
+          throw new Error('Invalid data format received from API');
+        }
+
+        const processedMaterials = data.data.map((material: any) => {
+          console.log('Processing material:', material); // Debug log
+          return {
+            id: material.id.toString(),
+            name: material.name.charAt(0).toUpperCase() + material.name.slice(1).replace(/-/g, ' '),
+            description: material.description || 'No description available',
+            image: material.image || '',
+            cooking_effect: material.cooking_effect || null,
+            hearts_recovered: material.hearts_recovered || null,
+            category: material.category || 'Other',
+            locations: material.common_locations || []
+          };
+        });
+
+        console.log('Processed Materials:', processedMaterials); // Debug log
 
         if (processedMaterials.length === 0) {
           throw new Error('No materials data found');
@@ -76,6 +86,8 @@ export default function MaterialsPage() {
     (searchTerm === '' || item.name.toLowerCase().includes(searchTerm.toLowerCase())) &&
     (categoryFilter === 'all' || item.category === categoryFilter)
   );
+
+  console.log('Filtered Materials:', filteredMaterials); // Debug log
 
   return (
     <div className="min-h-screen bg-[rgb(var(--background))] py-16">
@@ -143,6 +155,11 @@ export default function MaterialsPage() {
                       alt={item.name}
                       fill
                       className="object-contain"
+                      loading="lazy"
+                      onError={(e: any) => {
+                        console.error('Image failed to load:', item.image);
+                        e.target.style.display = 'none';
+                      }}
                     />
                   </div>
                 )}
@@ -173,40 +190,6 @@ export default function MaterialsPage() {
                       <span className="text-sm text-[rgb(var(--muted))] p-2 bg-[rgba(var(--primary),0.3)] rounded">
                         {item.cooking_effect}
                       </span>
-                    </div>
-                  )}
-                  
-                  {item.attack !== null && item.attack > 0 && (
-                    <div>
-                      <h4 className="font-bold text-[rgb(var(--gold))] mb-2">Attack Power:</h4>
-                      <span className="text-sm text-[rgb(var(--muted))] p-2 bg-[rgba(var(--primary),0.3)] rounded">
-                        {item.attack}
-                      </span>
-                    </div>
-                  )}
-
-                  {item.defense !== null && item.defense > 0 && (
-                    <div>
-                      <h4 className="font-bold text-[rgb(var(--gold))] mb-2">Defense:</h4>
-                      <span className="text-sm text-[rgb(var(--muted))] p-2 bg-[rgba(var(--primary),0.3)] rounded">
-                        {item.defense}
-                      </span>
-                    </div>
-                  )}
-
-                  {item.drops && item.drops.length > 0 && (
-                    <div>
-                      <h4 className="font-bold text-[rgb(var(--gold))] mb-2">Drops:</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {item.drops.map((drop, idx) => (
-                          <span 
-                            key={idx}
-                            className="text-xs text-[rgb(var(--muted))] p-2 bg-[rgba(var(--primary),0.3)] rounded"
-                          >
-                            {drop}
-                          </span>
-                        ))}
-                      </div>
                     </div>
                   )}
                   
