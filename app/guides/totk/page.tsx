@@ -1,6 +1,5 @@
-import { GiSpellBook, GiSwordsPower, GiTreasureMap, GiPotionBall, GiCrystalBall, GiScrollUnfurled } from 'react-icons/gi';
+import { GiSpellBook, GiTreasureMap, GiSwordsPower, GiPotionBall, GiCrystalBall, GiScrollUnfurled } from 'react-icons/gi';
 import { FaExternalLinkAlt } from 'react-icons/fa';
-import Link from 'next/link';
 
 const guideCategories = [
   {

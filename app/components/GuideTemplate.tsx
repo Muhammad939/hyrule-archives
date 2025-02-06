@@ -1,4 +1,4 @@
-import { GiSpellBook, GiScrollUnfurled } from 'react-icons/gi';
+import { GiSpellBook, GiScrollUnfurled, GiTreasureMap } from 'react-icons/gi';
 import Link from 'next/link';
 import Image from 'next/image';
 
