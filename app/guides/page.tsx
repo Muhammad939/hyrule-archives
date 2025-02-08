@@ -1,41 +1,123 @@
-import { GiSpellBook, GiSwordsPower, GiTreasureMap, GiPotionBall } from 'react-icons/gi';
+'use client';
+
 import Link from 'next/link';
+import { GiSpellBook, GiSwordsPower, GiTreasureMap, GiPuzzle, GiBookmarklet } from 'react-icons/gi';
 
 const guides = [
   {
-    title: "Tears of the Kingdom",
+    id: 'totk',
+    title: 'Tears of the Kingdom',
+    description: 'Complete walkthrough, shrine locations, side quests, and collectibles',
+    icon: GiSwordsPower,
+    color: 'from-blue-500/20 to-transparent',
     sections: [
-      { name: "Main Quest Guide", href: "/guides/totk/main-quest" },
-      { name: "Shrine Locations", href: "/guides/totk/shrines" },
-      { name: "Side Quests", href: "/guides/totk/side-quests" },
-      { name: "Ultrahand Builds", href: "/guides/totk/builds" }
+      {
+        name: 'Main Quest Guide',
+        url: '/guides/totk/main-quest',
+        isExternal: false
+      },
+      {
+        name: 'Shrine Locations',
+        url: 'https://www.zeldadungeon.net/tears-of-the-kingdom-shrine-locations/',
+        isExternal: true
+      },
+      {
+        name: 'Side Quests',
+        url: '/guides/totk/side-quests',
+        isExternal: false
+      },
+      {
+        name: 'Ultrahand Builds',
+        url: 'https://www.ign.com/wikis/the-legend-of-zelda-tears-of-the-kingdom/Best_Ultrahand_Builds',
+        isExternal: true
+      }
     ]
   },
   {
-    title: "Breath of the Wild",
+    id: 'botw',
+    title: 'Breath of the Wild',
+    description: 'Comprehensive guides for Divine Beasts, shrines, and secrets',
+    icon: GiTreasureMap,
+    color: 'from-green-500/20 to-transparent',
     sections: [
-      { name: "Main Quest Guide", href: "/guides/botw/main-quest" },
-      { name: "Shrine Locations", href: "/guides/botw/shrines" },
-      { name: "Korok Seeds", href: "/guides/botw/koroks" },
-      { name: "DLC Content", href: "/guides/botw/dlc" }
+      {
+        name: 'Main Quest Guide',
+        url: '/guides/botw/main-quest',
+        isExternal: false
+      },
+      {
+        name: 'Divine Beasts',
+        url: 'https://www.ign.com/wikis/the-legend-of-zelda-breath-of-the-wild/Divine_Beasts',
+        isExternal: true
+      },
+      {
+        name: 'Shrine Locations',
+        url: 'https://www.zeldadungeon.net/breath-of-the-wild-shrine-map/',
+        isExternal: true
+      },
+      {
+        name: 'Korok Seeds',
+        url: 'https://www.zeldadungeon.net/breath-of-the-wild-interactive-map/',
+        isExternal: true
+      }
     ]
   },
   {
-    title: "Classic Games",
+    id: 'classic',
+    title: 'Classic Games',
+    description: 'Guides for the legendary titles that shaped the series',
+    icon: GiBookmarklet,
+    color: 'from-purple-500/20 to-transparent',
     sections: [
-      { name: "Ocarina of Time", href: "/guides/oot" },
-      { name: "Majora's Mask", href: "/guides/mm" },
-      { name: "Wind Waker", href: "/guides/ww" },
-      { name: "Twilight Princess", href: "/guides/tp" }
+      {
+        name: 'Ocarina of Time',
+        url: '/guides/classic/ocarina-of-time',
+        isExternal: false
+      },
+      {
+        name: "Majora's Mask",
+        url: '/guides/classic/majoras-mask',
+        isExternal: false
+      },
+      {
+        name: 'Wind Waker',
+        url: 'https://www.zeldadungeon.net/wind-waker-walkthrough/',
+        isExternal: true
+      },
+      {
+        name: 'Twilight Princess',
+        url: 'https://www.ign.com/wikis/the-legend-of-zelda-twilight-princess/',
+        isExternal: true
+      }
     ]
   },
   {
-    title: "2D Adventures",
+    id: '2d',
+    title: '2D Adventures',
+    description: 'Complete guides for the classic top-down Zelda games',
+    icon: GiPuzzle,
+    color: 'from-red-500/20 to-transparent',
     sections: [
-      { name: "A Link to the Past", href: "/guides/alttp" },
-      { name: "Link's Awakening", href: "/guides/la" },
-      { name: "Minish Cap", href: "/guides/mc" },
-      { name: "Oracle Games", href: "/guides/oracle" }
+      {
+        name: 'A Link to the Past',
+        url: '/guides/2d/link-to-the-past',
+        isExternal: false
+      },
+      {
+        name: "Link's Awakening",
+        url: 'https://www.zeldadungeon.net/links-awakening-switch-walkthrough/',
+        isExternal: true
+      },
+      {
+        name: 'Minish Cap',
+        url: '/guides/2d/minish-cap',
+        isExternal: false
+      },
+      {
+        name: 'Oracle Games',
+        url: 'https://www.zeldadungeon.net/oracle-of-seasons-walkthrough/',
+        isExternal: true
+      }
     ]
   }
 ];
@@ -47,71 +129,107 @@ export default function GuidesPage() {
         {/* Header */}
         <div className="text-center mb-16">
           <GiSpellBook className="text-6xl mx-auto mb-4 text-[rgb(var(--gold))]" />
-          <h1 className="text-4xl md:text-5xl font-bold zelda-title mb-4">Game Guides</h1>
-          <p className="text-[rgb(var(--muted))] text-xl">Comprehensive guides for every adventure</p>
+          <h1 className="text-4xl md:text-5xl font-bold zelda-title mb-4">
+            Game Guides
+          </h1>
+          <p className="text-[rgb(var(--muted))] text-xl">
+            Comprehensive walkthroughs and strategies for every Zelda adventure
+          </p>
         </div>
 
-        {/* Guide Categories */}
+        {/* Guides Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {guides.map((category, idx) => (
-            <div key={idx} className="zelda-card">
-              <h2 className="card-title text-center mb-6">{category.title}</h2>
-              <ul className="space-y-4">
-                {category.sections.map((section, sectionIdx) => (
-                  <li key={sectionIdx}>
+          {guides.map((guide) => {
+            const Icon = guide.icon;
+            return (
+              <div key={guide.id} className="group">
+                <div className={`zelda-card hover:scale-[1.02] transition-all duration-300
+                              bg-[rgba(var(--primary),0.3)] backdrop-blur-sm
+                              border border-[rgba(var(--gold),0.2)] hover:border-[rgba(var(--gold),0.5)]`}
+                >
+                  <div className={`absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l ${guide.color} opacity-20`} />
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="p-4 bg-[rgba(var(--gold),0.1)] rounded-lg">
+                        <Icon className="text-4xl text-[rgb(var(--gold))]" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-bold text-[rgb(var(--gold))]">{guide.title}</h2>
+                        <span className="text-sm text-[rgb(var(--muted))]">{guide.sections.length} Sections</span>
+                      </div>
+                    </div>
+                    <p className="text-[rgb(var(--muted))] mb-6">{guide.description}</p>
+                    
+                    {/* Guide Sections */}
+                    <div className="space-y-3">
+                      {guide.sections.map((section, index) => (
+                        section.isExternal ? (
+                          <a 
+                            key={index}
+                            href={section.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-between p-3 rounded-lg
+                                     bg-[rgba(var(--primary),0.4)] hover:bg-[rgba(var(--primary),0.6)]
+                                     border border-[rgba(var(--gold),0.1)] hover:border-[rgba(var(--gold),0.3)]
+                                     group/item transition-all duration-300"
+                          >
+                            <span className="text-[rgb(var(--muted))] group-hover/item:text-[rgb(var(--gold))]
+                                           transition-colors duration-300 flex items-center gap-2">
+                              {section.name}
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                              </svg>
+                            </span>
+                            <span className="text-[rgb(var(--gold))] opacity-0 group-hover/item:opacity-100
+                                           transform translate-x-2 group-hover/item:translate-x-0
+                                           transition-all duration-300">
+                              →
+                            </span>
+                          </a>
+                        ) : (
                     <Link 
-                      href={section.href}
-                      className="block p-3 rounded transition-all duration-300
-                               bg-[rgba(var(--primary),0.3)] hover:bg-[rgba(var(--gold),0.1)]
-                               border border-[rgba(var(--gold),0.2)] hover:border-[rgba(var(--gold),0.5)]
-                               text-[rgb(var(--foreground))] hover:text-[rgb(var(--gold))]"
-                    >
-                      <span className="block">{section.name}</span>
+                            key={index}
+                            href={section.url}
+                            className="flex items-center justify-between p-3 rounded-lg
+                                     bg-[rgba(var(--primary),0.4)] hover:bg-[rgba(var(--primary),0.6)]
+                                     border border-[rgba(var(--gold),0.1)] hover:border-[rgba(var(--gold),0.3)]
+                                     group/item transition-all duration-300"
+                          >
+                            <span className="text-[rgb(var(--muted))] group-hover/item:text-[rgb(var(--gold))]
+                                           transition-colors duration-300">
+                              {section.name}
+                            </span>
+                            <span className="text-[rgb(var(--gold))] opacity-0 group-hover/item:opacity-100
+                                           transform translate-x-2 group-hover/item:translate-x-0
+                                           transition-all duration-300">
+                              →
+                            </span>
                     </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                        )
           ))}
         </div>
-
-        {/* Fan Resources */}
-        <div className="mt-24">
-          <h2 className="text-3xl font-bold zelda-title mb-8 text-center">Community Resources</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Link 
-              href="/retro-corner/minish-cap" 
-              className="block zelda-card text-center group hover:scale-[1.02] transition-all duration-300 cursor-pointer"
-            >
-              <div>
-                <GiTreasureMap className="zelda-icon mx-auto group-hover:text-[rgb(var(--gold))]" />
-                <h3 className="card-title group-hover:text-[rgb(var(--gold))]">Minish Cap</h3>
-                <p className="card-description">Complete walkthrough and preservation guide</p>
+                  </div>
+                </div>
               </div>
-            </Link>
+            );
+          })}
+        </div>
 
+        {/* Navigation Footer */}
+        <div className="mt-16 flex justify-between items-center">
             <Link 
-              href="/guides/speedrun" 
-              className="block zelda-card text-center group hover:scale-[1.02] transition-all duration-300 cursor-pointer"
-            >
-              <div>
-                <GiSwordsPower className="zelda-icon mx-auto group-hover:text-[rgb(var(--gold))]" />
-                <h3 className="card-title group-hover:text-[rgb(var(--gold))]">Speedrun Guides</h3>
-                <p className="card-description">Learn advanced techniques and strategies</p>
-              </div>
+            href="/"
+            className="text-[rgb(var(--gold))] hover:text-[rgb(var(--gold-hover))] transition-colors hover:-translate-x-1 transform duration-300"
+          >
+            ← Back to Home
             </Link>
-
             <Link 
-              href="/guides/glitches" 
-              className="block zelda-card text-center group hover:scale-[1.02] transition-all duration-300 cursor-pointer"
-            >
-              <div>
-                <GiPotionBall className="zelda-icon mx-auto group-hover:text-[rgb(var(--gold))]" />
-                <h3 className="card-title group-hover:text-[rgb(var(--gold))]">Glitch Archive</h3>
-                <p className="card-description">Documentation of game mechanics and glitches</p>
-              </div>
+            href="#"
+            className="text-[rgb(var(--gold))] hover:text-[rgb(var(--gold-hover))] transition-colors hover:-translate-y-1 transform duration-300"
+          >
+            Back to Top ↑
             </Link>
-          </div>
         </div>
       </div>
     </div>
