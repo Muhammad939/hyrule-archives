@@ -12,6 +12,24 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 export const metadata = {
   title: 'The Hyrule Archives',
   description: 'The Hyrule Archives Is A Website That Contains Information About The Legend Of Zelda Series. And Also Contains Guides, Puzzles, Compendium, And More!',
+  icons: {
+    icon: [
+      {
+        url: '/favicon/favicon.ico',
+        type: 'image/x-icon',
+      },
+      {
+        url: '/favicon/favicon-animated.ico',
+        type: 'image/x-icon',
+      }
+    ],
+    shortcut: [
+      {
+        url: '/favicon/favicon.ico',
+        type: 'image/x-icon',
+      }
+    ],
+  },
 };
 
 const navLinks = [

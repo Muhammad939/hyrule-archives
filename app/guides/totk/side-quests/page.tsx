@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { GiScrollQuill, GiTowngate } from 'react-icons/gi';
+import { GiScrollQuill, GiCastle } from 'react-icons/gi';
 
 const sideQuests = [
   {
@@ -131,7 +131,7 @@ export default function SideQuestsPage() {
               className="zelda-card bg-[rgba(var(--primary),0.3)] backdrop-blur-sm"
             >
               <h2 className="text-2xl font-bold text-[rgb(var(--gold))] mb-6 flex items-center gap-3">
-                <GiTowngate className="text-3xl" />
+                <GiCastle className="text-3xl" />
                 {region.region}
               </h2>
               
